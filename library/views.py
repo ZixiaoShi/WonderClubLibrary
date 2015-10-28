@@ -1,12 +1,6 @@
-from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Book
-from django.template import RequestContext, loader
 from django.shortcuts import render, render_to_response
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
-from rest_framework.parsers import JSONParser
-from rest_framework.decorators import api_view, detail_route
 from rest_framework import generics, viewsets, renderers, filters
 from .serializer import *
 
