@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'crispy_forms',
     'library',
 )
 
@@ -114,6 +115,6 @@ USE_TZ = True
 
 STATIC_PATH = os.path.join(BASE_DIR,'static')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    STATIC_PATH,
-)
+STATICFILES_DIRS = (STATIC_PATH,)
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'

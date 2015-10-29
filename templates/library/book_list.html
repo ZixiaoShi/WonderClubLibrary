@@ -1,0 +1,89 @@
+{% extends 'library/main.html' %}
+{% block mainbody %}
+
+    <div style="overflow: auto; width: 100%; margin-top: 2%;">
+
+
+    <div class="hero-unit" style="width:100%;height:100%;float:left;">
+        <button class="newBook">New</button>
+
+        <ul>
+            {% for book in object_list %}
+            <li>{{ book.title }}  :
+                <a id="edit" class="btn" href="{% url 'book_edit' book.id %}" data-form="edit/{{ book.id }}">Edit</a>
+            <button class="editBook" value={{ book.id }} href="">Edit</button>
+                <button class="deleteBook" value={{ book.id }}>Delete</button>
+            </li>
+            {% endfor %}
+        </ul>
+
+    </div>
+
+    </div>
+
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal hide" id="contactModal">
+    </div>
+
+        <div id="book_details" style="background-color: white;display: none;">
+        <div class="content"></div>
+
+        {% block bookbody %}
+        {% endblock %}
+    </div>
+
+    <script>
+        /*
+        $("#edit").click(function(ev) { // for each edit contact url
+            ev.preventDefault(); // prevent navigation
+            var url = $(this).data("form"); // get the contact form url
+            $("#contactModal").load(url, function() { // load the url into the modal
+                $(this).dialog(); // display the modal on url load
+            });
+            $("#contactModal").dialog();
+            //return false; // prevent the click propagation
+        });
+
+        $('.contact-form').on('submit', function() {
+            $.ajax({
+                type: $(this).attr('method'),
+                url: this.action,
+                data: $(this).serialize(),
+                context: this,
+                success: function(data, status) {
+                    $('#contactModal').html(data);
+                }
+            });
+            return false;
+        });
+*/
+        $(document).ready(function(){
+            /*
+            $(".editBook").click(function(){
+                var bookLink = "edit/" + this.value;
+                //$("#book_details").load(bookLink);
+                $('#book_details').bPopup({
+                    contentContainer:'.content',
+                    loadUrl: bookLink //Uses jQuery.load()
+                });
+            });
+            */
+            /*
+            $(".newBook").click(function(){
+               $("#book_details").load("new/");
+            });
+
+            $(".deleteBook").click(function(){
+                var bookLink = "delete/" + this.value;
+                //$("#book_details").load(bookLink);
+                $('#book_details').bPopup({
+                    contentContainer:'.content',
+                    loadUrl: bookLink //Uses jQuery.load()
+                });
+            });
+*/
+
+        });
+    </script>
+{% endblock %}
+

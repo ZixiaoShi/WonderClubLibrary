@@ -1,0 +1,37 @@
+
+
+{% extends 'library/main.html' %}
+{% block mainbody %}
+    {% load crispy_forms_tags %}
+
+
+<!--
+<form method="post">
+    <input type="submit" value="Submit" />
+</form>
+-->
+<!--
+<form class="contact-form" method="post" action="{{ item.id }}">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">×</button>
+    <h3>Editing Contact</h3>
+  </div>
+  <div class="modal-body">
+  </div>
+  <div class="modal-footer">
+       <input class="btn btn-primary" type="submit" value="Save" />
+       <input name="cancel" class="btn" type="submit" value="Cancel"/>
+  </div>
+</form>
+-->
+    <div>
+        <form method="post" action="{{ item.id }}">
+            {% crispy form %}
+       <input class="btn btn-primary" type="submit" value="Save" />
+       <input name="cancel" class="btn" type="submit" value="Cancel"/>
+
+        </form>
+
+    </div>
+
+{% endblock %}

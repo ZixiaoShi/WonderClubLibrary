@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.forms import ModelForm
 # Create your models here.
 """
 book:
@@ -36,31 +36,30 @@ class Pool(models.Model):
     location = models.CharField(max_length=255)
     start_date = models.DateField(auto_now=True)
 
-
+    def __unicode__(self):
+        return self.name
 
 
 class Book(models.Model):
 
-    title = models.CharField(max_length=255)
-    alt_title = models.CharField(max_length=255, blank=True, null=True)
-    sub_title = models.CharField(max_length=255, blank=True, null=True)
-    isbn = models.CharField(default='0', max_length=255)
-    author = models.CharField(default='author', max_length=255)
-    translator = models.CharField(max_length=255, blank=True, null=True)
-    publisher = models.CharField(max_length=255, blank=True, null=True)
-    pubdate = models.DateField(auto_now=False, auto_now_add=False, blank=True, null=True)
-    pages = models.IntegerField(default=0, blank=True, null=True)
-    donor = models.ForeignKey(User, null=True, blank=True, related_name='donor')
-    recommender = models.ManyToManyField(User, null=True, blank=True, related_name='recommender')
-    local_avail = models.BooleanField(default=True)
-    notes = models.CharField(max_length=1024, blank=True, null=True)
-    tags = models.CharField(max_length=1024, blank=True, null=True)
-    pool = models.ForeignKey(Pool, null=True, blank=True)
-    pool_date = models.DateField(auto_now=True, blank=True, null=True)
-    renter = models.ForeignKey(User, null=True, blank=True, related_name='renter')
-    duedate = models.DateField(blank=True, null=True)
+    title = models.CharField(max_length=255, verbose_name='Title')
+    alt_title = models.CharField(max_length=255, blank=True, null=True, verbose_name='Alternative Title')
+    sub_title = models.CharField(max_length=255, blank=True, null=True, verbose_name='Sub Title')
+    isbn = models.CharField(default='0', max_length=255, verbose_name='ISBN13')
+    author = models.CharField(default='author', max_length=255, verbose_name='Author')
+    translator = models.CharField(max_length=255, blank=True, null=True, verbose_name='Translator')
+    publisher = models.CharField(max_length=255, blank=True, null=True, verbose_name='Publisher')
+    pubdate = models.DateField(auto_now=False, auto_now_add=False, blank=True, null=True, verbose_name='Published Date')
+    pages = models.IntegerField(default=0, blank=True, null=True, verbose_name='Pages')
+    donor = models.ForeignKey(User, null=True, blank=True, related_name='Donor')
+    recommender = models.ManyToManyField(User, null=True, blank=True, related_name='Recommender')
+    local_avail = models.BooleanField(default=True, verbose_name='Local Availability')
+    notes = models.CharField(max_length=1024, blank=True, null=True, verbose_name='Notes')
+    tags = models.CharField(max_length=1024, blank=True, null=True, verbose_name='Tags')
+    pool = models.ForeignKey(Pool, null=True, blank=True, verbose_name='Pool')
+    pool_date = models.DateField(auto_now=True, blank=True, null=True, verbose_name='Pool Date')
+    renter = models.ForeignKey(User, null=True, blank=True, related_name='Renter')
+    duedate = models.DateField(blank=True, null=True, verbose_name='Due Date')
 
-    def __str__(self):
+    def __unicode__(self):
         return self.title
-
-
