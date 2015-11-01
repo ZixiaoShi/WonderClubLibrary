@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for WonderClub project.
 
@@ -9,7 +10,6 @@ https://docs.djangoproject.com/en/1.8/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.8/ref/settings/
 """
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
@@ -39,11 +39,13 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'crispy_forms',
+    'corsheaders',
     'library',
 )
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -53,15 +55,14 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
 )
 
-"""
+
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    'DEFAULT_FILTER_BACKENDS':(
+        'rest_framework_filters.backends.DjangoFilterBackend'
+    ),
 }
-"""
 
 ROOT_URLCONF = 'WonderClub.urls'
 
@@ -89,9 +90,18 @@ WSGI_APPLICATION = 'WonderClub.wsgi.application'
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    'sqlite': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    },
+
+     'default':{
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'Library',
+        'USER': 'wendao',
+        'PASSWORD': 'Wendao2015!',
+        'HOST': 'localhost',
+        'POST': '',
     }
 }
 
@@ -101,7 +111,15 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
+LANGUAGES = (
+    ('en',u'English'),
+    ('zh-cn',u'简体中文'),
+    ('zh-tw',u'繁体中文')
+)
+
 TIME_ZONE = 'UTC'
+
+CLIENT_ENCODING = 'UTF8'
 
 USE_I18N = True
 
@@ -118,3 +136,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (STATIC_PATH,)
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = (
+    'http://api.douban.com/v2/book/',
+)

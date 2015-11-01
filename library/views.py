@@ -1,11 +1,12 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, render, redirect, get_object_or_404
-from django.views import generic
-from django.contrib.auth.decorators import user_passes_test
 from django.contrib.admin.views.decorators import staff_member_required
 from rest_framework.renderers import JSONRenderer
 from rest_framework import viewsets, filters
 from .serializer import *
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit
+from crispy_forms.bootstrap import TabHolder, Tab, FieldWithButtons, StrictButton
 
 # Create your views here.
 def index(request):
@@ -23,6 +24,47 @@ class JSONResponse(HttpResponse):
 
 #Django Forms for editing books, staff only
 class BookForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(BookForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_id = "id-BookForm"
+        self.helper.form_method = 'post'
+        self.form_action = 'submit'
+        self.helper.layout = Layout(
+            TabHolder(
+                Tab(
+                    'Basic Information',
+                    FieldWithButtons('isbn',StrictButton('Read Information from Douban',id='readISBN')),
+                    'title',
+                    'alt_title',
+                    'sub_title',
+                    'author',
+                    'translator',
+                    'publisher',
+                    'pubdate',
+                    'pages'
+                ),
+                Tab(
+                    'Book Pool Information',
+                    'donor',
+                    'recommender',
+                    'local_avail',
+                    'notes',
+                    'tags',
+                    'pool',
+                    'pool_date',
+                    'book_number',
+                    'renter',
+                    'duedate'
+                )
+            )
+        )
+        self.helper.add_input(Submit('submit','Submit'))
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-lg-2'
+        self.helper.field_class = 'col-lg-8'
+        self.fields['pool'].required = True
+
     class Meta:
         model = Book
         exclude = []
@@ -41,7 +83,12 @@ def book_create(request, template_name='library/book_form.html'):
     if form.is_valid():
         form.save()
         return redirect('book_list')
-    return render(request, template_name, {'form':form})
+    dic = {'form':form,
+           'Access-Control-Allow-Origin':'*',
+           'Access-Control-Allow-Methods':"GET",
+           'Access-Control-Allow-Headers':'*'
+        }
+    return render(request, template_name, dic)
 
 @staff_member_required
 def book_update(request, pk, template_name='library/book_form.html'):
@@ -69,6 +116,7 @@ class PoolViewSet(viewsets.ReadOnlyModelViewSet):
 class BookViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    filter_fields = ('title', 'isbn', 'author',)
-    filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('title', 'isbn', 'author', 'id','book_number')
+    filter_backends = (filters.DjangoFilterBackend,filters.SearchFilter)
+    search_fields = ('title', 'author', 'book_number')
 

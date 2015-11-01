@@ -1,37 +1,14 @@
-
-
 {% extends 'library/main.html' %}
+{% load static %}
+{%  block LoadScript %}
+    <script type="text/javascript" src="http://www.douban.com/js/api.js?v=2"></script>
+    <script type="text/javascript" src="http://www.douban.com/js/api-parser.js?v=1"></script>
+    <script src="{% static 'js/CreateBook.js' %}"></script>
+    <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+    <link href="{% static 'css/jquery-ui.min.css' %}" rel="stylesheet">
+{% endblock %}
 {% block mainbody %}
     {% load crispy_forms_tags %}
-
-
-<!--
-<form method="post">
-    <input type="submit" value="Submit" />
-</form>
--->
-<!--
-<form class="contact-form" method="post" action="{{ item.id }}">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal">×</button>
-    <h3>Editing Contact</h3>
-  </div>
-  <div class="modal-body">
-  </div>
-  <div class="modal-footer">
-       <input class="btn btn-primary" type="submit" value="Save" />
-       <input name="cancel" class="btn" type="submit" value="Cancel"/>
-  </div>
-</form>
--->
-    <div>
-        <form method="post" action="{{ item.id }}">
-            {% crispy form %}
-       <input class="btn btn-primary" type="submit" value="Save" />
-       <input name="cancel" class="btn" type="submit" value="Cancel"/>
-
-        </form>
-
-    </div>
-
+{% crispy form %}
 {% endblock %}
+

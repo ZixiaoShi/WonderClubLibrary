@@ -52,14 +52,15 @@ class Book(models.Model):
     pubdate = models.DateField(auto_now=False, auto_now_add=False, blank=True, null=True, verbose_name='Published Date')
     pages = models.IntegerField(default=0, blank=True, null=True, verbose_name='Pages')
     donor = models.ForeignKey(User, null=True, blank=True, related_name='Donor')
-    recommender = models.ManyToManyField(User, null=True, blank=True, related_name='Recommender')
+    recommender = models.ManyToManyField(User,null=True,blank=True, related_name='Recommender')
     local_avail = models.BooleanField(default=True, verbose_name='Local Availability')
     notes = models.CharField(max_length=1024, blank=True, null=True, verbose_name='Notes')
     tags = models.CharField(max_length=1024, blank=True, null=True, verbose_name='Tags')
-    pool = models.ForeignKey(Pool, null=True, blank=True, verbose_name='Pool')
-    pool_date = models.DateField(auto_now=True, blank=True, null=True, verbose_name='Pool Date')
+    pool = models.ForeignKey(Pool,verbose_name='Pool',null=True, blank=True)
+    pool_date = models.DateField(auto_now=False, blank=True, null=True, verbose_name='Pool Date')
     renter = models.ForeignKey(User, null=True, blank=True, related_name='Renter')
     duedate = models.DateField(blank=True, null=True, verbose_name='Due Date')
+    book_number = models.CharField(default="0",max_length=255, verbose_name='Book Number')
 
     def __unicode__(self):
         return self.title

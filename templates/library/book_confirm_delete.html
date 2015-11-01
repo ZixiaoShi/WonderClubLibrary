@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends 'library/main.html' %}
+{% load static %}
+{% block mainbody %}
 <form method="post">{% csrf_token %}
     Are you sure you want to delete "{{ object }}" ?
     <input type="submit" value="Submit" />
 </form>
-</body>
-</html>
+{%  endblock %}

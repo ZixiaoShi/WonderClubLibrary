@@ -1,38 +1,88 @@
 {% extends 'library/main.html' %}
+{% load static %}
+{%  block LoadScript %}
+    <script src="{% static 'js/sorttable.js' %}"></script>
+{% endblock %}
+
 {% block mainbody %}
 
-    <div style="overflow: auto; width: 100%; margin-top: 2%;">
+    <div style="overflow: auto; width: 100%;">
 
+        <div class="hero-unit" >
+            <form class="form-inline" role="form">
+                <a class="btn" href="new">New Book</a>
+            <div class="form-group">
+                <label for="searchText">Search</label>
+                <input class="form-control input-lg" id="searchText" type="text">
+                <input type="button" class="form-control input-lg" id="searchBtn" value="Search">
+            </div>
 
-    <div class="hero-unit" style="width:100%;height:100%;float:left;">
-        <button class="newBook">New</button>
-
-        <ul>
-            {% for book in object_list %}
-            <li>{{ book.title }}  :
-                <a id="edit" class="btn" href="{% url 'book_edit' book.id %}" data-form="edit/{{ book.id }}">Edit</a>
-            <button class="editBook" value={{ book.id }} href="">Edit</button>
-                <button class="deleteBook" value={{ book.id }}>Delete</button>
-            </li>
-            {% endfor %}
-        </ul>
-
+            <table id="bookList" class="bookTable sortable table table-hover">
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Translator</th>
+                    <th>Book Number</th>
+                    <th>Pool</th>
+                    <th>Date Added</th>
+                    <th></th>
+                </tr>
+            </table>
+            </form>
     </div>
-
-    </div>
-
-    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal hide" id="contactModal">
-    </div>
-
-        <div id="book_details" style="background-color: white;display: none;">
         <div class="content"></div>
+
 
         {% block bookbody %}
         {% endblock %}
-    </div>
+
 
     <script>
+        $(document).ready(function(){
+            var baseurl = "/api/books/?format=json&";
+            var filter = 'search=';
+            ReadList(baseurl);
+            function ReadList(url){
+                $('.bookTable tr').slice(1).remove();
+                $.getJSON(url,function(data){
+                    for (i=0; i < data.length; i++){
+                        $('.bookTable').append($("<tr>")
+                                        .append($('<td>')
+                                        .text(data[i].title))
+                                        .append($('<td>')
+                                        .text(data[i].author))
+                                        .append($('<td>')
+                                        .text(data[i].translator))
+                                        .append($('<td>')
+                                        .text(data[i].book_number))
+                                        .append($('<td>')
+                                        .text(data[i].pool))
+                                        .append($('<td>')
+                                        .text(data[i].pool_date))
+                                        .append($('<td>')
+                                        .append($('<a>')
+                                                        .addClass('btn')
+                                                        .text("Edit")
+                                                        .attr('href','edit/'+data[i].id)
+                                        )
+                                        .append($('<a>')
+                                                        .addClass('btn')
+                                                        .text("Delete")
+                                                        .attr('href','delete/'+data[i].id)
+                                        ))
+                        );
+                    }
+                //console.log(data);
+                });
+            }
+
+            $("#searchBtn").on("click",function(){
+                var txt = $("#searchText").val();
+                var url = baseurl + filter + txt;
+                ReadList(url);
+
+            });
+        });
         /*
         $("#edit").click(function(ev) { // for each edit contact url
             ev.preventDefault(); // prevent navigation
