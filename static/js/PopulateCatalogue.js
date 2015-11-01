@@ -26,11 +26,11 @@ function NewThumbNail(book){
 }
 
 function CheckAvailability(book){
-    if ( book.rernter == null){
+    if ( book.renter == null){
         return "Available"
     }
     else{
-        return "Unavailable Until" + book.duedata
+        return "Borrowed Until " + book.duedate
     }
 }
 
