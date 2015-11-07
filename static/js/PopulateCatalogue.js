@@ -15,22 +15,34 @@ function NewThumbNail(book){
                           .append($('<h5>')
                                   .text(book.author))
                           .append($('<h5>')
-                                  .text(CheckAvailability(book)))
-                          .append($('<a>')
+                                  .text(AvailableText(book)))
+                          .append($('<button>')
                                   .addClass('btn')
                                   .addClass('reserve')
-                                  .text("Reserve"))
+                                  .text("Reserve")
+                                  .attr("value", book.id)
+                                  .prop('disabled', !CheckAvailability(book)))
+
           )
 
   ))
 }
 
 function CheckAvailability(book){
-    if ( book.renter == null){
-        return "Available"
+    if ( book.renter == null || book.local_avail == "false"){
+        return true;
     }
     else{
-        return "Borrowed Until " + book.duedate
+        return false;
+    }
+}
+
+function AvailableText(book){
+    if (CheckAvailability(book)){
+        return "Available";
+    }
+    else{
+        return "Borrowed Until " + book.duedate;
     }
 }
 
@@ -47,3 +59,18 @@ function ImgURL(element){
         }
     });
 }
+
+$(document).ready(function(){
+    $(".thumbnails").on("click",".btn.reserve",function(){
+        //alert("reserve book");
+        var reserve_url = "reserve/" + $(this).val() + "/";
+        //console.log(reserve_url);
+        //window.open(url);
+        checkAuth();
+        $("#myModal").modal();
+        $.ajax({url:reserve_url,success:function(data) {
+            console.log(data);
+            //alert(data);
+        }});
+    });
+});

@@ -1,11 +1,13 @@
-{% extends 'library/main.html' %}
-{% load static %}
-{%  block LoadScript %}
+{% extends 'library/base.html' %}
+{% load static i18n %}
+{%  block extra_js %}
     <script type="text/javascript" src="http://www.douban.com/js/api.js?v=2"></script>
     <script type="text/javascript" src="http://www.douban.com/js/api-parser.js?v=1"></script>
     <script src="{% static 'js/PopulateCatalogue.js' %}"></script>
+    <script src="https://apis.google.com/js/client.js?onload=checkAuth"></script>
+    <script src="{% static 'js/gCalendar.js' %}" ></script>
 {% endblock %}
-{% block mainbody %}
+{% block main %}
       <!-- Main hero unit for a primary marketing message or call to action -->
       <div class="hero-unit">
       <ul class="thumbnails">
@@ -25,10 +27,32 @@
       </ul>
       </div>
 
+
+              <!-- Modal -->
+          <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body" id="modal-body">
+                  <p>Some text in the modal.</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
     <script>
         $(document).ready(function(){
 
-            $.getJSON("/api/books/?format=json&",function(books){
+            $.getJSON("/library/api/books/?format=json&",function(books){
                 for (i=0; i<books.length; i++){
                     NewThumbNail(books[i]);
                 }

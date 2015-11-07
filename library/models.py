@@ -64,3 +64,14 @@ class Book(models.Model):
 
     def __unicode__(self):
         return self.title
+
+
+class Reservation(models.Model):
+    book = models.ForeignKey(Book, verbose_name="Book")
+    borrower = models.ForeignKey(User, verbose_name="Borrower")
+    request_date = models.DateField(auto_now=True)
+    pickup_date = models.DateField(auto_now=False)
+    picked_up = models.BooleanField(default=False)
+    due_date = models.DateField(auto_now=False)
+    returned = models.BooleanField(default=False)
+    return_date = models.DateField(auto_now=False)

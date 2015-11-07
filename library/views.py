@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, render, redirect, get_object_or_404
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 from rest_framework.renderers import JSONRenderer
 from rest_framework import viewsets, filters
 from .serializer import *
@@ -8,13 +9,20 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit
 from crispy_forms.bootstrap import TabHolder, Tab, FieldWithButtons, StrictButton
 
-# Create your views here.
+# Library Home View.
+@login_required
 def index(request):
     all_books_list = Book.objects.order_by('id')[:5]
     context = {
         'all_books_list': all_books_list,
     }
     return render_to_response('library/index.html', context)
+
+
+def test(request):
+    context = {}
+    return render_to_response('library/gCalendarTest.html',context)
+
 
 class JSONResponse(HttpResponse):
     def __init__(self, data, **kwargs):
@@ -120,3 +128,14 @@ class BookViewSet(viewsets.ReadOnlyModelViewSet):
     filter_backends = (filters.DjangoFilterBackend,filters.SearchFilter)
     search_fields = ('title', 'author', 'book_number')
 
+#Reservation Views
+@login_required
+def NewReservation(request, id):
+    try:
+        book = Book.objects.get(id=id)
+    except:
+        return HttpResponse("No Book Found")
+    if book.local_avail == False:
+        return HttpResponse("Book Unavailable")
+
+    return HttpResponse("success")

@@ -39,13 +39,11 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'crispy_forms',
-    'corsheaders',
     'library',
 )
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -90,19 +88,19 @@ WSGI_APPLICATION = 'WonderClub.wsgi.application'
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASES = {
-    'sqlite': {
+    'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     },
 
-     'default':{
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'Library',
-        'USER': 'wendao',
-        'PASSWORD': 'Wendao2015!',
-        'HOST': 'localhost',
-        'POST': '',
-    }
+#     'default':{
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': 'Library',
+#        'USER': 'wendao',
+#        'PASSWORD': 'Wendao2015!',
+#        'HOST': 'localhost',
+#        'POST': '',
+#    }
 }
 
 
@@ -136,7 +134,3 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (STATIC_PATH,)
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = (
-    'http://api.douban.com/v2/book/',
-)
