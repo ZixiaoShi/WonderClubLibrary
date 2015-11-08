@@ -78,7 +78,6 @@ var request = gapi.client.calendar.events.list({
 
 request.execute(function(resp) {
   var events = resp.items;
-  appendPre('Upcoming events:');
 
   if (events.length > 0) {
       var now = new Date();
@@ -113,9 +112,16 @@ request.execute(function(resp) {
 * @param {string} message Text to be placed in pre element.
 */
 function appendOpt(event){
+    var date = Date(event.start.dateTime);
     $("#events").append($('<option>')
-        .text(event.summary + "--" + event.start.dateTime)
-    )
+        .text(event.summary + "--" + date.toString())
+    );
+    $("#events-btn").append($('<button>')
+            .addClass('btn btn-default btn-lg btn-block')
+            .text(event.summary + ": " + date.toString())
+            .attr('value', date)
+
+    );
 }
 
 function appendPre(message) {
