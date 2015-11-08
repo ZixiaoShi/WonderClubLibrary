@@ -1,10 +1,10 @@
-{% extends 'library/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {%  block extra_js %}
     <script src="{% static 'js/sorttable.js' %}"></script>
 {% endblock %}
 
-{% block main %}
+{% block content %}
 
     <div style="overflow: auto; width: 100%;">
 
@@ -39,7 +39,7 @@
 
     <script>
         $(document).ready(function(){
-            var baseurl = "/library/api/books/?format=json&";
+            var baseurl = "/api/books/?format=json&";
             var filter = 'search=';
             ReadList(baseurl);
             function ReadList(url){

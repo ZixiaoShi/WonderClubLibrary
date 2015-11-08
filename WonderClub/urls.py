@@ -18,13 +18,13 @@ from django.conf.urls import url, include
 from library import views
 
 
-
 urlpatterns = [
-    url(r'^$', views.index),
+    #url(r'^$', views.index),
     url(r'^admin/', include(admin.site.urls)),
     #url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-    url(r'^library/', include('library.urls')),
-    url(r'^accounts/login$', 'django.contrib.auth.views.login'),
+    url(r'', include('library.urls')),
+    url(r'^login/','django.contrib.auth.views.login'),
+    #url(r'^accounts/', include('registration.backends.default.urls')),
     #url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
     ]
 
