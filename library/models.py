@@ -30,6 +30,19 @@ pool:
 	start_year:
 """
 
+
+class Borrower(models.Model):
+
+    id = models.AutoField(primary_key=True)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    credit = models.IntegerField()
+
+    def __unicode__(self):
+        return self.first_name + self.last_name
+
+
+
 class Pool(models.Model):
 
     name = models.CharField(max_length=255, unique=True)
