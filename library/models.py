@@ -31,18 +31,6 @@ pool:
 """
 
 
-class Borrower(models.Model):
-
-    id = models.AutoField(primary_key=True)
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    credit = models.IntegerField()
-
-    def __unicode__(self):
-        return self.first_name + self.last_name
-
-
-
 class Pool(models.Model):
 
     name = models.CharField(max_length=255, unique=True)
@@ -69,8 +57,8 @@ class Book(models.Model):
     local_avail = models.BooleanField(default=True, verbose_name='Local Availability')
     notes = models.CharField(max_length=1024, blank=True, null=True, verbose_name='Notes')
     tags = models.CharField(max_length=1024, blank=True, null=True, verbose_name='Tags')
-    pool = models.ForeignKey(Pool,verbose_name='Pool',null=True, blank=True)
-    pool_date = models.DateField(auto_now=False, blank=True, null=True, verbose_name='Pool Date')
+    pool = models.ForeignKey(Pool,verbose_name='Pool',null=True)
+    pool_date = models.DateField(auto_now=False, null=True, verbose_name='Pool Date')
     renter = models.ForeignKey(User, null=True, blank=True, related_name='Renter')
     duedate = models.DateField(blank=True, null=True, verbose_name='Due Date')
     book_number = models.CharField(default="0",max_length=255, verbose_name='Book Number')
@@ -80,11 +68,11 @@ class Book(models.Model):
 
 
 class Reservation(models.Model):
-    book = models.ForeignKey(Book, verbose_name="Book")
-    borrower = models.ForeignKey(User, verbose_name="Borrower")
-    request_date = models.DateField(auto_now=True)
-    pickup_date = models.DateField(auto_now=False)
-    picked_up = models.BooleanField(default=False)
-    due_date = models.DateField(auto_now=False)
-    returned = models.BooleanField(default=False)
-    return_date = models.DateField(auto_now=False)
+    book = models.ForeignKey(Book, null=True, verbose_name="Book")
+    borrower = models.ForeignKey(User, null=True, verbose_name="Borrower")
+    request_date = models.DateField(auto_now=True, null=True, verbose_name="Request Date")
+    pickup_date = models.DateField(auto_now=False, null=True, verbose_name="Pickup Date")
+    picked_up = models.BooleanField(default=False, verbose_name="Picked Up Status")
+    due_date = models.DateField(auto_now=False, null=True, verbose_name="Due Date")
+    returned = models.BooleanField(default=False, verbose_name="Returned Status")
+    return_date = models.DateField(auto_now=False, null=True, verbose_name="Return Date")

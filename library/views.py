@@ -117,14 +117,14 @@ def book_delete(request, pk, template_name='library/book_confirm_delete.html'):
 
 
 #Django Rest API View Sets
-@login_required
-class PoolViewSet(viewsets.ModelViewSet):
+#@login_required
+class PoolViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Pool.objects.all()
     serializer_class = PoolSerializer
 
 
-@login_required
-class BookViewSet(viewsets.ModelViewSet):
+#@login_required
+class BookViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     filter_fields = ('title', 'isbn', 'author', 'id','book_number')
